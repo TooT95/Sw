@@ -1,6 +1,6 @@
 import telebot
 from telebot import types
-from Work import Work_with_file, config,Main_part
+import Work_with_file, config,Main_part
 from PIL import Image
 
 bot = telebot.TeleBot(config.token)
