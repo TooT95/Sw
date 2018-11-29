@@ -1,6 +1,6 @@
 import telebot
 from telebot import types
-from Work import Work_with_file
+import Work_with_file
 from PIL import Image
 
 
