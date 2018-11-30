@@ -1,1 +1,1 @@
- web: python button_click.py
+bot: python button_click.py
