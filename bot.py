@@ -38,7 +38,7 @@ def getMessage():
 @server.route("/")
 def webhook():
     bot.remove_webhook()
-    bot.set_webhook(url='https://api.telegram.org/bot' + token)
+    bot.set_webhook(url='https://8d4e993f.ngrok.io/' + token)
     return "!", 200
 
 
