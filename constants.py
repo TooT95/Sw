@@ -1,7 +1,7 @@
 # Constants
 from task import *
 
-token = '467163689:AAExvFJvGzfuPABhl0wwd7pTpqg4jJgWofk'  # Bot's token
+token = '736499313:AAEkYrlxvxRYQW2WppS-xXdeZpznM5KGTSY'  # Bot's token
 
 start_command_message = '''Вас приветсвует бот канала @Unilecs! 🖥 Чем я могу вам помочь?🔖'''
 
