@@ -3,7 +3,6 @@ import time
 import telebot
 from random import randint
 from flask import Flask, request
-from constants import *
 
 bot = telebot.TeleBot(token)
 server = Flask(__name__)
@@ -26,7 +25,7 @@ def get_random_task(tasks):
 
 @bot.message_handler(commands=['start'])
 def start(message):
-    text_of_message = start_command_message
+    text_of_message = "Hello"
     bot.send_message(message.from_user.id, text_of_message)
 
 @server.route('/' + token, methods=['POST'])
