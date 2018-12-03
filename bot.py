@@ -4,6 +4,8 @@ import telebot
 from random import randint
 from flask import Flask, request
 
+token = "736499313:AAEkYrlxvxRYQW2WppS-xXdeZpznM5KGTSY"
+
 bot = telebot.TeleBot(token)
 server = Flask(__name__)
 
