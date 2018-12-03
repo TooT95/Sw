@@ -1,50 +1,44 @@
 import os
-import time
-import telebot
-from random import randint
-from flask import Flask, request
-from constants import *
 
-token = "736499313:AAEkYrlxvxRYQW2WppS-xXdeZpznM5KGTSY"
+import requests
+from telegram.ext import RegexHandler, Updater
 
-bot = telebot.TeleBot(token)
-names = "swgangs"
-server = Flask(__name__)
+from config import URL, PORT
+from utils import format_thousands
 
 
-def get_task_by_number(tasks, number):
-    try:
-        return next((x for x in tasks if x.number == number), None)
-    except:
-        return None
+class Bot:
+    def __init__(self, token, debug=False):
+        self._token = token
+        self._updater = Updater(token)
+        self._debug = debug
 
+        self._session = requests.Session()
 
-def get_random_task(tasks):
-    rand = randint(1, len(tasks))
-    if 1 <= rand <= len(tasks):
-      return get_task_by_number(tasks, rand)
-    else:
-      return None
+        self._init_handlers()
+    
+    def run(self):
+        self._updater.start_webhook(listen='0.0.0.0', port=PORT,
+                                    url_path=self._token)
+        self._updater.bot.set_webhook(URL + self._token)
+        self._updater.idle()
+    
+    def _init_handlers(self):
+        self._updater.dispatcher.add_handler(
+            RegexHandler("^/([a-z_]+)$", self._get_currency_price,
+                         pass_groups=True))
 
+    def _get_currency_price(self, bot, update, groups):
+        currency = groups[0]
+    
+        info = self._get_info(currency.replace("_", "-"))
+    
+        text = "Current {} price - ${}".format(info["name"], format_thousands(info["price_usd"], sep=" "))
+    
+        bot.send_message(chat_id=update.message.chat_id, text=text)
+    
+    def _get_info(self, name):
+        url = "https://api.coinmarketcap.com/v1/ticker/{}"
 
-@bot.message_handler(commands=['start'])
-def start(message):
-    text_of_message = start_command_message
-    bot.send_message(message.from_user.id, text_of_message)
-
-@server.route('/' + token, methods=['POST'])
-def getMessage():
-    bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
-    return "Hello", 200
-
-
-@server.route("/", methods=["GET"])
-def webhook():
-    bot.remove_webhook()
-    bot.set_webhook(url="https://{}.herokuapp.com/{}".format(names, token))
-    return "Hi", 200
-
-
-if __name__ == "__main__":
-    server.debug = True
-    server.run()
+        response = self._session.get(url.format(name))
+        return response.json()[0]
