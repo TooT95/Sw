@@ -1,4 +1,4 @@
-const token = process.env.TOKEN;
+const token = '741015930:AAFyfoX9RxOFrzDjFmyv2iGhbCTtDAziQJQ';
 
 const Bot = require('node-telegram-bot-api');
 let bot;
