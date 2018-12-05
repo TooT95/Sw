@@ -1,6 +1,4 @@
-node_modules/
-.idea/
-local_*
-*.log
-.DS_Store
-package-lock.json
+node_modules/*
+# Heroku environment configuration
+.env
+env.cmd
